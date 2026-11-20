@@ -101,21 +101,18 @@ var id="AKfycbwRvgS4-QIjB9dB9aYB8HY39Mvgw4uNriW5YiGA_69nHhgrJY3O0xkJYNXdw5SU2ypv
 var API=pr+d2+"/macros/s/"+id+"/exec";
 var PINET=pr+["lokaserve1821","pinet","com"].join(".");
 
-</script>
-<script src="https://minepi.com"></script>
-
-<script>
-try {
-  if (window.Pi) {
-    window.Pi.init({ version: "2.0", sandbox: false });
-    m.innerText = "Sistem Pi Mainnet siap! Silakan tekan Masuk dengan Akun Pi.";
-  } else {
-    m.innerText = "Buka melalui Pi Browser untuk terhubung ke jaringan Pi.";
+var s=document.createElement('script');
+s.src=pr+d1+"/pi-sdk.js";
+s.onload=function(){
+  if(window.Pi){
+    window.Pi.init({version:"2.0",sandbox:false});
+    m.innerText="Sistem Pi Mainnet siap! Silakan tekan Masuk dengan Akun Pi.";
+  }else{
+    m.innerText="Buka melalui Pi Browser untuk terhubung ke jaringan Pi.";
   }
-} catch (e) {
-  m.innerText = "Inisialisasi Pi SDK: " + e.message;
-}
-
+};
+s.onerror=function(){m.innerText="Gagal memuat Pi SDK."};
+document.head.appendChild(s);
 
 function setTab(n){
   document.getElementById('t1').className=n==1?'tab on':'tab';
@@ -180,3 +177,5 @@ function tutup(){document.getElementById('mod').style.display='none'}
 
 function bayar(){
   var fn=document.getElementById('fn').value,fw=document.getElementById('fw').value,fa=document.getElementById('fa').value,ft=document.getElementById('ft').value;
+  if(!fn||!fw||!fa||!ft){alert("Harap lengkapi semua kolom pemesanan!");return}
+  tutup();
