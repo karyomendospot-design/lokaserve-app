@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LokaServe — Direktori Jasa Harian Pi Network</title>
+<script src="https://minepi.com"></script>
 <style>
 *{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f4f4f9;margin:0;padding:16px;color:#333}
 .box{max-width:480px;margin:auto;background:#fff;padding:18px;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
@@ -34,7 +35,7 @@ h1{color:#593B8B;font-size:20px;margin:0}.tag{background:#d1e7dd;color:#0f5132;f
   <div id="auth-box"><button class="btn" onclick="loginPi()">Masuk dengan Akun Pi</button></div>
   <button class="btn btn-share" onclick="bagikanApp()">Bagikan LokaServe ke Pioneer Lain</button>
   
-  <div id="msg" class="info">Memuat sistem Pi SDK...</div>
+  <div id="msg" class="info">Memeriksa koneksi Pi Network...</div>
   
   <div class="tabs">
     <button class="tab on" id="t1" onclick="setTab(1)">Daftar Jasa</button>
@@ -96,16 +97,15 @@ h1{color:#593B8B;font-size:20px;margin:0}.tag{background:#d1e7dd;color:#0f5132;f
 
 <script>
 var m=document.getElementById('msg'),u=null,sel={};
-var pr="https:"+"//",d1=["sdk","minepi","com"].join("."),d2=["script","google","com"].join(".");
-var id="AKfycbwRvgS4-QIjB9dB9aYB8HY39Mvgw4uNriW5YiGA_69nHhgrJY3O0xkJYNXdw5SU2ypvdg";
-var API=pr+d2+"/macros/s/"+id+"/exec";
-var PINET=pr+["lokaserve1821","pinet","com"].join(".");
+var API="https://google.com";
+var PINET="https://pinet.com";
 
-</script>
-<script src="https://minepi.com"></script>
-<script>
-if(window.Pi){window.Pi.init({version:"2.0",sandbox:false});m.innerText="Sistem Pi Mainnet siap!"}
-
+if(window.Pi){
+  window.Pi.init({version:"2.0",sandbox:false});
+  m.innerText="Sistem Pi Mainnet siap! Silakan tekan Masuk dengan Akun Pi.";
+}else{
+  m.innerText="Buka aplikasi ini lewat Pi Browser (tautan PiNet) agar tombol login aktif.";
+}
 
 function setTab(n){
   document.getElementById('t1').className=n==1?'tab on':'tab';
@@ -148,7 +148,7 @@ function onIncompletePaymentFound(payment){
 }
 
 function loginPi(){
-  if(!window.Pi){alert("Buka lewat Pi Browser!");return}
+  if(!window.Pi){alert("Buka lewat Pi Browser menggunakan tautan PiNet Anda!");return}
   m.innerText="Menghubungkan ke akun Pi...";
   window.Pi.authenticate(['username','payments'],onIncompletePaymentFound).then(function(auth){
     u=auth.user;
@@ -172,3 +172,6 @@ function bayar(){
   var fn=document.getElementById('fn').value,fw=document.getElementById('fw').value,fa=document.getElementById('fa').value,ft=document.getElementById('ft').value;
   if(!fn||!fw||!fa||!ft){alert("Harap lengkapi semua kolom pemesanan!");return}
   tutup();
+  m.innerText="Membuka Pi Wallet untuk pembayaran DP "+sel.harga+" Pi...";
+  window.Pi.createPayment({
+ 
