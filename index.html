@@ -3,177 +3,116 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LokaServe — Direktori Jasa Harian Pi Network</title>
-<script>document.write('<scr'+'ipt src="https://'+['sdk','minepi','com'].join('.')+'/pi-sdk.js"></scr'+'ipt>');</script>
-
+<title>LokaServe Mainnet</title>
+<script>
+var h="https://",s1=['sdk','minepi','com'].join('.');
+document.write('<scr'+'ipt src="'+h+s1+'/pi-sdk.js"></scr'+'ipt>');
+</script>
 <style>
-*{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f4f4f9;margin:0;padding:16px;color:#333}
-.box{max-width:480px;margin:auto;background:#fff;padding:18px;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
-.top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;padding-bottom:10px;margin-bottom:10px}
-h1{color:#593B8B;font-size:20px;margin:0}.tag{background:#d1e7dd;color:#0f5132;font-size:11px;font-weight:bold;padding:4px 8px;border-radius:6px}
-.btn{background:#593B8B;color:#fff;border:none;padding:11px;border-radius:8px;cursor:pointer;width:100%;font-size:14px;font-weight:bold;margin-top:8px}
+body{font-family:sans-serif;background:#f4f4f9;margin:0;padding:12px;color:#333}
+.box{max-width:460px;margin:auto;background:#fff;padding:16px;border-radius:12px}
+.top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;padding-bottom:8px}
+h1{color:#593B8B;font-size:19px;margin:0}
+.tag{background:#d1e7dd;color:#0f5132;font-size:11px;font-weight:bold;padding:3px 7px;border-radius:5px}
+.btn{background:#593B8B;color:#fff;border:none;padding:10px;border-radius:8px;width:100%;font-weight:bold;margin-top:8px}
 .btn2{background:#fff;color:#593B8B;border:1px solid #593B8B}
-.btn-share{background:#f3c623;color:#222;margin-top:6px;font-size:13px;padding:9px}
-.info{background:#eef6ff;padding:10px;border-radius:8px;font-size:12.5px;margin:12px 0;color:#004085;border-left:4px solid #007bff;word-break:break-word}
-.tabs{display:flex;gap:6px;margin-bottom:12px}.tab{flex:1;padding:9px 4px;border:1px solid #ddd;background:#f8f9fa;border-radius:8px;font-weight:bold;font-size:12px;cursor:pointer}
+.info{background:#eef6ff;padding:9px;border-radius:7px;font-size:12px;margin:10px 0;color:#004085}
+.tabs{display:flex;gap:5px;margin-bottom:10px}
+.tab{flex:1;padding:8px;border:1px solid #ddd;background:#f8f9fa;border-radius:7px;font-weight:bold;font-size:12px}
 .tab.on{background:#593B8B;color:#fff}
-.card{border:1px solid #e2e2e8;border-radius:10px;padding:14px;margin-bottom:12px;background:#fafafa}
-.card h3{margin:0 0 4px;font-size:15px}.mitra{font-size:12px;color:#593B8B;font-weight:bold;margin-bottom:6px}
-.card p{margin:0 0 8px;font-size:12.5px;color:#555}.dp{font-weight:bold;color:#16a34a;font-size:13px}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99;align-items:center;justify-content:center;padding:16px}
-.m-in{background:#fff;width:100%;max-width:400px;border-radius:12px;padding:18px}
-.fg{margin-bottom:10px}.fg label{display:block;font-size:12px;font-weight:bold;margin-bottom:4px}
-.fg input,.fg textarea,.fg select{width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;font-size:13px}
-.ord{border:1px solid #d1e7dd;background:#f8fffb;border-radius:8px;padding:12px;margin-bottom:10px;font-size:12.5px}
-.tx{font-family:monospace;font-size:11px;background:#eee;padding:4px;border-radius:4px;display:block;margin-top:6px;word-break:break-all}
+.card{border:1px solid #e2e2e8;border-radius:9px;padding:12px;margin-bottom:10px;background:#fafafa}
+.card h3{margin:0 0 4px;font-size:14.5px}.dp{font-weight:bold;color:#16a34a;font-size:12.5px}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:14px}
+.m-in{background:#fff;width:100%;max-width:380px;border-radius:10px;padding:15px}
+input,textarea{width:100%;padding:8px;margin:4px 0 8px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box}
 </style>
 </head>
 <body>
 <div class="box">
   <div class="top"><h1>LokaServe</h1><span class="tag">Pi Mainnet</span></div>
-  <p style="font-size:13px;color:#666;margin:0 0 10px">Direktori Jasa Harian &amp; Perbaikan Rumah</p>
-  
-  <div id="auth-box"><button class="btn" onclick="loginPi()">Masuk dengan Akun Pi</button></div>
-  <button class="btn btn-share" onclick="bagikanApp()">Bagikan LokaServe ke Pioneer Lain</button>
-  
-  <div id="msg" class="info">Memeriksa koneksi Pi Network...</div>
-  
+  <div id="auth"><button class="btn" onclick="loginPi()">Masuk dengan Akun Pi</button></div>
+  <div id="msg" class="info">Menyiapkan Pi SDK...</div>
   <div class="tabs">
-    <button class="tab on" id="t1" onclick="setTab(1)">Daftar Jasa</button>
-    <button class="tab" id="t2" onclick="setTab(2)">Pesanan (<span id="cnt">0</span>)</button>
-    <button class="tab" id="t3" onclick="setTab(3)">Jadi Mitra</button>
+    <button class="tab on" id="t1" onclick="tab(1)">Daftar Jasa</button>
+    <button class="tab" id="t2" onclick="tab(2)">Pesanan (<span id="cnt">0</span>)</button>
   </div>
-
   <div id="p1">
-    <div id="extra-jasa"></div>
-    <div class="card">
-      <h3>Servis &amp; Cuci AC Panggilan</h3>
-      <div class="mitra">Mitra: Teknisi Sejuk Mandiri (★ 4.9)</div>
-      <p>Pembersihan unit indoor/outdoor, cek freon, dan perbaikan bocor.</p>
-      <div class="dp">Booking DP: 0.5 Pi</div>
-      <button class="btn" onclick="buka('Servis & Cuci AC','Teknisi Sejuk Mandiri',0.5)">Pesan Jasa (0.5 Pi)</button>
-    </div>
-    <div class="card">
-      <h3>Jasa Tukang &amp; Perbaikan Ringan</h3>
-      <div class="mitra">Mitra: Karya Tukang Lokal (★ 4.8)</div>
-      <p>Perbaikan pipa bocor, kelistrikan dasar, atap, dan cat dinding.</p>
-      <div class="dp">Booking DP: 1.0 Pi</div>
-      <button class="btn" onclick="buka('Jasa Tukang Harian','Karya Tukang Lokal',1.0)">Pesan Jasa (1.0 Pi)</button>
-    </div>
-    <div class="card">
-      <h3>Deep Cleaning Rumah &amp; Kos</h3>
-      <div class="mitra">Mitra: BersihKilat Homecare (★ 4.9)</div>
-      <p>Pembersihan menyeluruh kamar mandi, dapur, kaca, dan lantai.</p>
-      <div class="dp">Booking DP: 0.5 Pi</div>
-      <button class="btn" onclick="buka('Deep Cleaning Rumah','BersihKilat Homecare',0.5)">Pesan Jasa (0.5 Pi)</button>
-    </div>
+    <div class="card"><h3>Servis &amp; Cuci AC</h3><p>Teknisi Sejuk Mandiri (★ 4.9)</p><div class="dp">DP: 0.5 Pi</div><button class="btn" onclick="buka('Cuci AC',0.5)">Pesan (0.5 Pi)</button></div>
+    <div class="card"><h3>Jasa Tukang Harian</h3><p>Karya Tukang Lokal (★ 4.8)</p><div class="dp">DP: 1.0 Pi</div><button class="btn" onclick="buka('Tukang Harian',1.0)">Pesan (1.0 Pi)</button></div>
+    <div class="card"><h3>Deep Cleaning Rumah</h3><p>BersihKilat Homecare (★ 4.9)</p><div class="dp">DP: 0.5 Pi</div><button class="btn" onclick="buka('Deep Cleaning',0.5)">Pesan (0.5 Pi)</button></div>
   </div>
-
-  <div id="p2" style="display:none"><div id="list">Belum ada riwayat pesanan.</div></div>
-
-  <div id="p3" style="display:none">
-    <div class="card">
-      <h3>Daftar Penyedia Jasa Lokal</h3>
-      <p>Buka peluang penghasilan Pi dengan menawarkan keahlian jasa Anda kepada Pioneer sekitar.</p>
-      <div class="fg"><label>Nama Usaha / Teknisi</label><input id="mn" placeholder="Contoh: Berkah Servis Elektronik"></div>
-      <div class="fg"><label>Jenis Layanan Jasa</label><input id="mj" placeholder="Contoh: Servis Pompa Air & Listrik"></div>
-      <div class="fg"><label>Deskripsi Singkat Layanan</label><textarea id="md" rows="2" placeholder="Jelaskan area layanan & keahlian..."></textarea></div>
-      <div class="fg"><label>Biaya Booking DP (Pi)</label><select id="mp"><option value="0.5">0.5 Pi</option><option value="1.0">1.0 Pi</option></select></div>
-      <button class="btn" onclick="daftarMitra()">Publikasikan Jasa ke Direktori</button>
-    </div>
-  </div>
+  <div id="p2" style="display:none"><div id="list">Belum ada pesanan.</div></div>
 </div>
 
 <div class="modal" id="mod">
   <div class="m-in">
-    <h3 id="m-tit" style="margin-top:0;color:#593B8B">Form Pemesanan</h3>
-    <div class="fg"><label>Nama Lengkap</label><input id="fn" placeholder="Nama Anda"></div>
-    <div class="fg"><label>Nomor WhatsApp</label><input type="tel" id="fw" placeholder="08123456789"></div>
-    <div class="fg"><label>Alamat Lengkap</label><textarea id="fa" rows="2" placeholder="Alamat rumah"></textarea></div>
-    <div class="fg"><label>Tanggal Kunjungan</label><input type="date" id="ft"></div>
-    <button class="btn" onclick="bayar()">Bayar DP via Pi Wallet</button>
+    <h3 id="mt" style="margin:0 0 8px;color:#593B8B">Pesan Jasa</h3>
+    <input id="fn" placeholder="Nama Lengkap">
+    <input id="fw" type="tel" placeholder="Nomor WhatsApp">
+    <textarea id="fa" rows="2" placeholder="Alamat Lengkap"></textarea>
+    <button class="btn" onclick="bayar()">Bayar via Pi Wallet</button>
     <button class="btn btn2" onclick="tutup()">Batal</button>
   </div>
 </div>
 
 <script>
- var API="https://"+["script","google","com"].join(".")+"/macros/s/AKfycbwRvgS4-QIjB9dB9aYB8HY39Mvgw4uNriW5YiGA_69nHhgrJY3O0xkJYNXdw5SU2ypvdg/exec";
-var PINET="https://"+["lokaserve1821","pinet","com"].join(".");
- 
-var PINET="https://pinet.com";
+var m=document.getElementById('msg'),u=null,sel={};
+var d2=['script','google','com'].join('.');
+var id="AKfycbwRvgS4-QIjB9dB9aYB8HY39Mvgw4uNriW5YiGA_69nHhgrJY3O0xkJYNXdw5SU2ypvdg";
+var API=h+d2+"/macros/s/"+id+"/exec";
 
 if(window.Pi){
   window.Pi.init({version:"2.0",sandbox:false});
-  m.innerText="Sistem Pi Mainnet siap! Silakan tekan Masuk dengan Akun Pi.";
+  m.innerText="Sistem Pi Mainnet siap! Tekan Masuk dengan Akun Pi.";
 }else{
-  m.innerText="Buka aplikasi ini lewat Pi Browser (tautan PiNet) agar tombol login aktif.";
+  m.innerText="Buka lewat Pi Browser (tautan PiNet) agar tombol aktif.";
 }
 
-function setTab(n){
+function tab(n){
   document.getElementById('t1').className=n==1?'tab on':'tab';
   document.getElementById('t2').className=n==2?'tab on':'tab';
-  document.getElementById('t3').className=n==3?'tab on':'tab';
   document.getElementById('p1').style.display=n==1?'block':'none';
   document.getElementById('p2').style.display=n==2?'block':'none';
-  document.getElementById('p3').style.display=n==3?'block':'none';
   if(n==2)render();
 }
-
-function bagikanApp(){
-  var ref=u?PINET+"?ref="+u.username:PINET;
-  if(navigator.clipboard){navigator.clipboard.writeText(ref)}
-  m.innerText="Tautan rujukan PiNet disalin: "+ref+" — Bagikan ke Pioneer lain!";
-}
-
-function daftarMitra(){
-  var mn=document.getElementById('mn').value,mj=document.getElementById('mj').value,md=document.getElementById('md').value,mp=parseFloat(document.getElementById('mp').value);
-  if(!mn||!mj||!md){alert("Lengkapi profil layanan jasa Anda!");return}
-  var ml=JSON.parse(localStorage.getItem('ls_m')||'[]');
-  ml.unshift({mn:mn,mj:mj,md:md,mp:mp});
-  localStorage.setItem('ls_m',JSON.stringify(ml));
-  document.getElementById('mn').value="";document.getElementById('mj').value="";document.getElementById('md').value="";
-  muatMitra();m.innerText="Layanan '"+mj+"' berhasil ditambahkan ke direktori!";setTab(1);
-}
-
-function muatMitra(){
-  var ml=JSON.parse(localStorage.getItem('ls_m')||'[]'),w=document.getElementById('extra-jasa');
-  var h="";
-  for(var i=0;i<ml.length;i++){
-    var x=ml[i];
-    h+='<div class="card"><h3>'+x.mj+'</h3><div class="mitra">Mitra: '+x.mn+' (Baru)</div><p>'+x.md+'</p><div class="dp">Booking DP: '+x.mp+' Pi</div><button class="btn" onclick="buka(\''+x.mj+'\',\''+x.mn+'\','+x.mp+')">Pesan Jasa ('+x.mp+' Pi)</button></div>';
-  }
-  w.innerHTML=h;
-}
-
-function onIncompletePaymentFound(payment){
-  fetch(API,{method:"POST",body:JSON.stringify({action:"complete",paymentId:payment.identifier,txid:payment.transaction?payment.transaction.txid:""})});
-}
-
 function loginPi(){
-  if(!window.Pi){alert("Buka lewat Pi Browser menggunakan tautan PiNet Anda!");return}
-  m.innerText="Menghubungkan ke akun Pi...";
-  window.Pi.authenticate(['username','payments'],onIncompletePaymentFound).then(function(auth){
-    u=auth.user;
-    document.getElementById('auth-box').innerHTML='<div style="background:#e8f5e9;color:#1b5e20;padding:10px;border-radius:8px;font-weight:bold;text-align:center">Terhubung sebagai @'+u.username+'</div>';
-    m.innerText="Selamat datang, @"+u.username+"! Anda siap memesan jasa.";
-  }).catch(function(err){
-    m.innerText="Login dibatalkan atau gagal: "+err;
-  });
+  if(!window.Pi){alert("Buka lewat Pi Browser!");return}
+  window.Pi.authenticate(['username','payments'],function(p){
+    fetch(API,{method:"POST",body:JSON.stringify({action:"complete",paymentId:p.identifier,txid:p.transaction?p.transaction.txid:""})});
+  }).then(function(a){
+    u=a.user;
+    document.getElementById('auth').innerHTML='<div style="padding:8px;background:#e8f5e9;color:#1b5e20;border-radius:7px;text-align:center;font-weight:bold">@'+u.username+'</div>';
+    m.innerText="Terhubung sebagai @"+u.username;
+  }).catch(function(e){m.innerText="Gagal login: "+e});
 }
-
-function buka(jasa,mitra,harga){
-  if(!u){alert("Silakan tekan 'Masuk dengan Akun Pi' terlebih dahulu!");return}
-  sel={jasa:jasa,mitra:mitra,harga:harga};
-  document.getElementById('m-tit').innerText="Pesan: "+jasa+" ("+harga+" Pi)";
+function buka(j,p){
+  if(!u){alert("Silakan Masuk dengan Akun Pi dulu!");return}
+  sel={j:j,p:p};document.getElementById('mt').innerText=j+" ("+p+" Pi)";
   document.getElementById('mod').style.display='flex';
 }
-
 function tutup(){document.getElementById('mod').style.display='none'}
-
 function bayar(){
-  var fn=document.getElementById('fn').value,fw=document.getElementById('fw').value,fa=document.getElementById('fa').value,ft=document.getElementById('ft').value;
-  if(!fn||!fw||!fa||!ft){alert("Harap lengkapi semua kolom pemesanan!");return}
-  tutup();
-  m.innerText="Membuka Pi Wallet untuk pembayaran DP "+sel.harga+" Pi...";
-  window.Pi.createPayment({
- 
+  var fn=document.getElementById('fn').value,fw=document.getElementById('fw').value,fa=document.getElementById('fa').value;
+  if(!fn||!fw||!fa){alert("Lengkapi data!");return}
+  tutup();m.innerText="Membuka Pi Wallet...";
+  window.Pi.createPayment({amount:sel.p,memo:"DP "+sel.j,metadata:{user:u.username,jasa:sel.j,nama:fn,wa:fw,alamat:fa}},{
+    onReadyForServerApproval:function(pid){fetch(API,{method:"POST",body:JSON.stringify({action:"approve",paymentId:pid})})},
+    onReadyForServerCompletion:function(pid,tx){
+      fetch(API,{method:"POST",body:JSON.stringify({action:"complete",paymentId:pid,txid:tx})});
+      var ol=JSON.parse(localStorage.getItem('ls_o')||'[]');
+      ol.unshift({j:sel.j,p:sel.p,fn:fn,tx:tx});localStorage.setItem('ls_o',JSON.stringify(ol));
+      document.getElementById('cnt').innerText=ol.length;m.innerText="Pembayaran berhasil!";tab(2);
+    },
+    onCancel:function(){m.innerText="Pembayaran dibatalkan."},
+    onError:function(e){m.innerText="Eror: "+e}
+  });
+}
+function render(){
+  var ol=JSON.parse(localStorage.getItem('ls_o')||'[]'),l=document.getElementById('list');
+  if(!ol.length){l.innerHTML="Belum ada pesanan.";return}
+  l.innerHTML=ol.map(function(o){return '<div class="card"><b>'+o.j+'</b> ('+o.p+' Pi)<br>Pemesan: '+o.fn+'<br><small>Tx: '+o.tx+'</small></div>'}).join('');
+}
+document.getElementById('cnt').innerText=JSON.parse(localStorage.getItem('ls_o')||'[]').length;
+</script>
+</body>
+</html>
