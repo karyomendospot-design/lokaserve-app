@@ -4,10 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>LokaServe Mainnet</title>
-<script>
-var h="https://",s1=['sdk','minepi','com'].join('.');
-document.write('<scr'+'ipt src="'+h+s1+'/pi-sdk.js"></scr'+'ipt>');
-</script>
+<script src="https://minepi.com"></script>
 <style>
 body{font-family:sans-serif;background:#f4f4f9;margin:0;padding:12px;color:#333}
 .box{max-width:460px;margin:auto;background:#fff;padding:16px;border-radius:12px}
@@ -57,9 +54,6 @@ input,textarea{width:100%;padding:8px;margin:4px 0 8px;border:1px solid #ccc;bor
 
 <script>
 var m=document.getElementById('msg'),u=null,sel={};
-var d2=['script','google','com'].join('.');
-var id="AKfycbwRvgS4-QIjB9dB9aYB8HY39Mvgw4uNriW5YiGA_69nHhgrJY3O0xkJYNXdw5SU2ypvdg";
-var API=h+d2+"/macros/s/"+id+"/exec";
 
 if(window.Pi){
   window.Pi.init({version:"2.0",sandbox:false});
@@ -75,38 +69,68 @@ function tab(n){
   document.getElementById('p2').style.display=n==2?'block':'none';
   if(n==2)render();
 }
+
 function loginPi(){
   if(!window.Pi){alert("Buka lewat Pi Browser!");return}
   window.Pi.authenticate(['username','payments'],function(p){
-    fetch(API,{method:"POST",body:JSON.stringify({action:"complete",paymentId:p.identifier,txid:p.transaction?p.transaction.txid:""})});
+    if(p.transaction && p.transaction.txid){
+      fetch('/api/complete',{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({paymentId:p.identifier,txid:p.transaction.txid})
+      });
+    }
   }).then(function(a){
     u=a.user;
     document.getElementById('auth').innerHTML='<div style="padding:8px;background:#e8f5e9;color:#1b5e20;border-radius:7px;text-align:center;font-weight:bold">@'+u.username+'</div>';
     m.innerText="Terhubung sebagai @"+u.username;
   }).catch(function(e){m.innerText="Gagal login: "+e});
 }
+
 function buka(j,p){
   if(!u){alert("Silakan Masuk dengan Akun Pi dulu!");return}
   sel={j:j,p:p};document.getElementById('mt').innerText=j+" ("+p+" Pi)";
   document.getElementById('mod').style.display='flex';
 }
+
 function tutup(){document.getElementById('mod').style.display='none'}
+
 function bayar(){
   var fn=document.getElementById('fn').value,fw=document.getElementById('fw').value,fa=document.getElementById('fa').value;
   if(!fn||!fw||!fa){alert("Lengkapi data!");return}
   tutup();m.innerText="Membuka Pi Wallet...";
-  window.Pi.createPayment({amount:sel.p,memo:"DP "+sel.j,metadata:{user:u.username,jasa:sel.j,nama:fn,wa:fw,alamat:fa}},{
-    onReadyForServerApproval:function(pid){fetch(API,{method:"POST",body:JSON.stringify({action:"approve",paymentId:pid})})},
-    onReadyForServerCompletion:function(pid,tx){
-      fetch(API,{method:"POST",body:JSON.stringify({action:"complete",paymentId:pid,txid:tx})});
+  window.Pi.createPayment({
+    amount:sel.p,
+    memo:"DP "+sel.j,
+    metadata:{user:u.username,jasa:sel.j,nama:fn,wa:fw,alamat:fa}
+  },{
+    onReadyForServerApproval:async function(pid){
+      m.innerText="Menyetujui transaksi...";
+      await fetch('/api/approve',{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({paymentId:pid})
+      });
+    },
+    onReadyForServerCompletion:async function(pid,tx){
+      m.innerText="Menyelesaikan pembayaran...";
+      await fetch('/api/complete',{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({paymentId:pid,txid:tx})
+      });
       var ol=JSON.parse(localStorage.getItem('ls_o')||'[]');
-      ol.unshift({j:sel.j,p:sel.p,fn:fn,tx:tx});localStorage.setItem('ls_o',JSON.stringify(ol));
-      document.getElementById('cnt').innerText=ol.length;m.innerText="Pembayaran berhasil!";tab(2);
+      ol.unshift({j:sel.j,p:sel.p,fn:fn,tx:tx});
+      localStorage.setItem('ls_o',JSON.stringify(ol));
+      document.getElementById('cnt').innerText=ol.length;
+      m.innerText="Pembayaran berhasil!";
+      tab(2);
     },
     onCancel:function(){m.innerText="Pembayaran dibatalkan."},
-    onError:function(e){m.innerText="Eror: "+e}
+    onError:function(e){m.innerText="Eror: "+(e.message||e)}
   });
 }
+
 function render(){
   var ol=JSON.parse(localStorage.getItem('ls_o')||'[]'),l=document.getElementById('list');
   if(!ol.length){l.innerHTML="Belum ada pesanan.";return}
