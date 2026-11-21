@@ -1,9 +1,9 @@
-export default async function handler(req, res) {
+module.exports = async function (req, res) {
   const { paymentId } = req.body;
-  const response = await fetch(`https://minepi.com{paymentId}/approve`, {
+  const r = await fetch(`https://minepi.com{paymentId}/approve`, {
     method: 'POST',
     headers: { 'Authorization': `Key ${process.env.PI_API_KEY}` }
   });
-  const data = await response.json();
-  res.status(response.status).json(data);
-}
+  const data = await r.json();
+  res.status(r.status).json(data);
+};
